@@ -34,7 +34,12 @@ http://whereitishosted.com/vimeon.php?id=4530033&thumb_size=small
 */
 
 // $id = '4530033';
-$id = (int)trim($_GET['vimeo_id']); // cast it to integer, to ensure it's not something dangerous
+$result = preg_match('/(\d+)/', $_GET['id'], $matches);
+if ($result) {
+  $id = $matches[0];
+} else {
+  die; // it wasn't passed a proper ID
+}
 $thumb_sizes = array('small', 'medium', 'large');
 
 if (isset($_GET['thumb_size']) && in_array($_GET['thumb_size'], $thumb_sizes))
@@ -52,6 +57,7 @@ if (isset($response[0]) && isset($response[0]->{'thumbnail_'.$thumb_size})) {
   header("Content-Type: image/jpeg"); 
   echo $img_content;
 }
+
 
 
 
